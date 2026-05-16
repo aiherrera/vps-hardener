@@ -1,0 +1,37 @@
+# Triggers doc sync on vps-hardener-landing when docs/ changes on main.
+#
+# Secrets on aiherrera/vps-hardener (Settings → Secrets → Actions):
+#   LANDING_SYNC_APP_ID          — GitHub App ID (numeric)
+#   LANDING_SYNC_APP_PRIVATE_KEY — full .pem contents from the app
+#
+# GitHub App: install on aiherrera/vps-hardener-landing with:
+#   Metadata (read), Contents (read), Actions (read and write)
+# Webhook on the app: inactive (not required).
+
+name: Notify landing site — docs changed
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/**"
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create GitHub App installation token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.LANDING_SYNC_APP_ID }}
+          private-key: ${{ secrets.LANDING_SYNC_APP_PRIVATE_KEY }}
+          owner: aiherrera
+          repositories: vps-hardener-landing
+
+      - name: Trigger vps-hardener-landing doc sync
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          repository: aiherrera/vps-hardener-landing
+          event-type: sync-docs
