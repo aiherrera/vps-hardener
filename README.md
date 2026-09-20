@@ -68,7 +68,7 @@ See [docs/configuration.md](docs/configuration.md).
 | No web firewall ports | [examples/minimal.md](examples/minimal.md) |
 | Tailscale-only SSH | [examples/tailscale.md](examples/tailscale.md) |
 | Custom deploy user | [examples/custom-user.md](examples/custom-user.md) |
-| Production checklist | [examples/production.md](examples/production.md) |
+| Production checklist | [examples/production.md](examples/production.md) |\n| GitHub Actions runner pool | [examples/github-actions-runners.md](examples/github-actions-runners.md) |
 
 ## Documentation
 
